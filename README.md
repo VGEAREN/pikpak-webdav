@@ -8,6 +8,9 @@
 
 ## 使用方法
 
+**Pakpik必须设置代理使用！**
+
+
 - [Jar包运行](#jar包运行)
 - [Docker](#Docker)
 - [Docker Compose](#Docker-Compose)
