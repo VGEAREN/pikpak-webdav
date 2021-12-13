@@ -27,7 +27,7 @@
 ### Docker
 
 ```bash
-[root@localhost ~]# docker run -d --name=pikpak-webdav --restart=unless-stopped -p 8080:8080  -v /etc/localtime:/etc/localtime -e TZ="Asia/Shanghai" -e JAVA_OPTS="-Xmx512m" -e PIKPAK_USERNAME="PIKPAK_USERNAME" -e PIKPAK_PASSWORD="PIKPAK_PASSWORD" -e PIKPAK_PROXY_HOST="" -e PIKPAK_PROXY_PORT="" -e PIKPAK_PROXY_PROXYTYPE="HTTP/SOCKS/DIRECT"  vgearen/pikpak-webdav
+[root@localhost ~]# docker run -d --name=pikpak-webdav --restart=unless-stopped --network=host -v /etc/localtime:/etc/localtime -e TZ="Asia/Shanghai" -e JAVA_OPTS="-Xmx512m" -e SERVER_PORT="8080" -e PIKPAK_USERNAME="PIKPAK_USERNAME" -e PIKPAK_PASSWORD="PIKPAK_PASSWORD" -e PIKPAK_PROXY_HOST="" -e PIKPAK_PROXY_PORT="" -e PIKPAK_PROXY_PROXY-TYPE="HTTP/SOCKS/DIRECT"  vgearen/pikpak-webdav
 ```
 
 默认认证账号密码admin/admin，需要修改添加参数` -e PIKPAK_AUTH_USER_NAME="USERNAME" -e PIKPAK_AUTH_PASSWORD="PASSWORD"` 
@@ -45,8 +45,7 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime
-    ports:
-      - "8080:8080"
+    network_mode: "host" # 使用宿主机的代理
     tty: true
     environment:
       - TZ=Asia/Shanghai
@@ -54,7 +53,8 @@ services:
       - PIKPAK_PASSWORD=<change me>
       - PIKPAK_PROXY_HOST=<change me>
       - PIKPAK_PROXY_PORT=<change me>
-      - PIKPAK_PROXY_PROXYTYPE=<change me>
+      - PIKPAK_PROXY_PROXY-TYPE=<change me>
+      - SERVER_PORT=8080
       # - PIKPAK_AUTH_USER_NAME=<change me>
       # - PIKPAK_AUTH_PASSWORD=<change me>
 
