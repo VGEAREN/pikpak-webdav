@@ -31,24 +31,15 @@ public class PikpakDriverClient {
 
         String username = pikpakProperties.getUsername();
         String password = pikpakProperties.getPassword();
-        String host = pikpakProperties.getProxy().getHost();
-        Integer port = pikpakProperties.getProxy().getPort();
-        String proxyType = pikpakProperties.getProxy().getProxyType();
-        Proxy.Type type = Proxy.Type.HTTP;
-        switch (proxyType){
-            case "HTTP": type = Proxy.Type.HTTP;break;
-            case "SOCKS": type = Proxy.Type.SOCKS;break;
-            case "DIRECT": type = Proxy.Type.DIRECT;break;
-        }
-        Proxy proxy = new Proxy(type,new InetSocketAddress(host, port));
+
         if(!StringUtils.hasLength(username)){
             LOGGER.error("username为空");
         }else if(!StringUtils.hasLength(password)){
             LOGGER.error("password为空");
         }else {
-            LOGGER.info("\nusername: {},\npassword: {}",username,password);
+            LOGGER.info("\nusername: {}\npassword: {}",username,password);
         }
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
@@ -88,10 +79,33 @@ public class PikpakDriverClient {
         })
             .readTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(1, TimeUnit.MINUTES)
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .proxy(proxy)
-            .build();
-        this.okHttpClient = okHttpClient;
+            .connectTimeout(1, TimeUnit.MINUTES);
+
+        if(pikpakProperties.getProxy() != null){
+            if(pikpakProperties.getProxy().getHost() != null
+                    && pikpakProperties.getProxy().getProxyType() != null
+                    && pikpakProperties.getProxy().getPort() != null) {
+                String host = pikpakProperties.getProxy().getHost();
+                Integer port = pikpakProperties.getProxy().getPort();
+                String proxyType = pikpakProperties.getProxy().getProxyType();
+                LOGGER.info("\nhost: {}\nport: {}\ntype: {}",host,port,proxyType);
+                Proxy.Type type;
+                switch (proxyType.toUpperCase()) {
+                    case "HTTP":
+                        type = Proxy.Type.HTTP;
+                        break;
+                    case "SOCKS":
+                        type = Proxy.Type.SOCKS;
+                        break;
+                    case "DIRECT":
+                    default:
+                        type = Proxy.Type.DIRECT;
+                }
+                Proxy proxy = new Proxy(type, new InetSocketAddress(host, port));
+                okHttpClientBuilder.proxy(proxy);
+            }
+        }
+        this.okHttpClient = okHttpClientBuilder.build();
         this.pikpakProperties = pikpakProperties;
         this.login(username,password);
     }

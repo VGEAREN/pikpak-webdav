@@ -18,7 +18,7 @@
 
 
 ### Jar包运行
-[点击下载JAR](https://github.com/VGEAREN/pikpak-webdav/releases/download/v1.0.0/pikpak-webdav.jar)
+[点击下载JAR](https://github.com/VGEAREN/pikpak-webdav/releases/latest)
 
 ```bash
 [root@localhost ~]# java -jar pikpak-webdav.jar --pikpak.username="username" --pikpak.password="password" --pikpak.proxy.host="" --pikpak.proxy.port="" --pikpak.proxy.proxyType="HTTP/SOCKS/DIRECT"
