@@ -9,7 +9,8 @@
 ## 使用方法
 
 **Pakpik必须设置代理使用！**
-
+**Pakpik必须设置代理使用！**
+**Pakpik必须设置代理使用！(当然如果你的服务器在墙外当我没说)**
 
 - [Jar包运行](#jar包运行)
 - [Docker](#Docker)
@@ -32,7 +33,9 @@
 
 默认认证账号密码admin/admin，需要修改添加参数` -e PIKPAK_AUTH_USER_NAME="USERNAME" -e PIKPAK_AUTH_PASSWORD="PASSWORD"` 
 
-PIKPAK_PROXY_PROXYTYPE参数为HTTP或SOCKS或DIRECT
+PIKPAK_PROXY_PROXY-TYPE参数为HTTP或SOCKS或DIRECT
+
+**请确认容器内的服务能正常访问代理，否则会启动失败！**
 
 ### Docker Compose
 
